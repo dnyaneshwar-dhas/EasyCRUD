@@ -72,6 +72,24 @@ pipeline {
                 }
             }
         }
+
+        stage('Trivy image scanning') {
+            steps {
+                sh '''
+                TEMPDIR=/opt/temp trivy image --scanner vuln --severity HIGH,CRITICAL --exit-cod 0 backend:${BUILD_NUMBER}
+                '''
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                timeout(time: 30, unit: 'MINUTES') {
+                    input message: 'Approve deployment to kubernetes/' , ok: 'Approve'
+
+                }
+            }
+        }
+        
         stage('Push To ECR') {
             steps {
                 sh '''
