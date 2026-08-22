@@ -1,0 +1,14 @@
+pipeline {
+    agent {
+        label 'worker'
+    }
+
+    stages {
+        stage('Checkout'){
+            steps {
+                git branch: 'main', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
+            }
+        }
+
+    } 
+}
