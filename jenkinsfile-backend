@@ -76,7 +76,7 @@ pipeline {
         stage('Trivy image scanning') {
             steps {
                 sh '''
-                TEMPDIR=/opt/temp trivy image --scanner vuln --severity HIGH,CRITICAL --exit-cod 0 backend:${BUILD_NUMBER}
+                TEMPDIR=/opt/temp trivy image --scanner vuln --severity HIGH,CRITICAL --exit-code 0 backend:${BUILD_NUMBER}
                 '''
             }
         }
@@ -89,7 +89,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Push To ECR') {
             steps {
                 sh '''
