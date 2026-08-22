@@ -4,18 +4,18 @@ pipeline {
     }
 
     stages {
-        stage('Checkout'){
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
+                git branch: 'main',
+                    url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
             }
         }
 
-    } 
-
-    stage('Build'){
-        steps {
-            dir('backend'){
-                sh 'mvn clean package'
+        stage('Build') {
+            steps {
+                dir('backend') {
+                    sh 'mvn clean package'
+                }
             }
         }
     }
