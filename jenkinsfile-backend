@@ -3,7 +3,7 @@ pipeline {
         label 'worker'
     }
 
-    tools{
+    tools {
         maven 'mvn'
     }
 
@@ -25,19 +25,20 @@ pipeline {
                     sh 'mvn clean package'
                 }
             }
+
             post {
                 success {
-                    archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true 
+                    archiveArtifacts artifacts: 'backend/target/*.jar',
+                                     fingerprint: true
                 }
             }
         }
 
-        stage('Artifact to s3') {
+        stage('Artifact to S3') {
             steps {
                 sh '''
-
-                aws s3 cp backend/target/*.jar s3://dnyanu.space/Artifact/student.jar
-
+                    aws s3 cp backend/target/*.jar \
+                    s3://dnyanu.space/Artifact/student.jar
                 '''
             }
         }
@@ -46,11 +47,12 @@ pipeline {
             steps {
                 dir('backend') {
                     withSonarQubeEnv('sonar') {
-                        dh 'mvn sonar:sonar' 
+                        sh 'mvn sonar:sonar'
                     }
-                }
                 }
             }
         }
     }
 }
+
+ 
