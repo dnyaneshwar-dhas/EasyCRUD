@@ -2,105 +2,11 @@ pipeline {
     agent {
         label 'worker'
     }
-
-    tools {
-        maven 'mvn'
-    }
-
-    environment {
-        my_aws_cred = credentials('aws-access')
-        ECR_REPO = '872582135546.dkr.ecr.us-east-2.amazonaws.com/backend'
-    }
-
+} 
     stages {
-        stage('Checkout') {
+        stage('checkout'){
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                dir('backend') {
-                    sh 'mvn clean package'
-                }
-            }
-
-            post {
-                success {
-                    archiveArtifacts artifacts: 'backend/target/*.jar',
-                                     fingerprint: true
-                }
-            }
-        }
-
-        stage('Artifact to S3') {
-            steps {
-                sh '''
-                    aws s3 cp backend/target/*.jar \
-                    s3://dnyanu.space/Artifact/student.jar
-                '''
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                dir('backend') {
-                    withSonarQubeEnv('sonar') {
-                        sh 'mvn sonar:sonar'
-                    }
-                }
-            }
-        }
-
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 5, unit: 'MINUTES'){
-                    waitForQualityGate abortPipeline: true 
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                dir('backend') {
-                    sh '''
-                    docker build -t backend:${BUILD_NUMBER} .
-                    docker images
-                    '''
-                }
-            }
-        }
-
-        //stage('Trivy image scanning') {
-          //  steps {
-            //    sh '''
-              //  TEMPDIR=/opt/temp trivy image --scanner vuln --severity HIGH,CRITICAL --exit-code 0 backend:${BUILD_NUMBER}
-                //'''
-            //}
-        //}
-
-        stage('Approval') {
-            steps {
-                timeout(time: 30, unit: 'MINUTES') {
-                    input message: 'Approve deployment to kubernetes/' , ok: 'Approve'
-
-                }
-            }
-        }
-
-        stage('Push To ECR') {
-            steps {
-                sh '''
-                aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 872582135546.dkr.ecr.us-east-2.amazonaws.com
-                docker tag backend:${BUILD_NUMBER} ${ECR_REPO}:${BUILD_NUMBER}
-                docker push ${ECR_REPO}:${BUILD_NUMBER}
-                '''
+                git branch: 'main', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
             }
         }
     }
-}
-
-
- 
