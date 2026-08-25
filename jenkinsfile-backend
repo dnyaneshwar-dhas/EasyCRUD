@@ -67,6 +67,14 @@ pipeline {
                 }
             }
         }
+        
+        stage('Trivy image sacnning') {
+            steps {
+                sh '''
+                   trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 backend:${BUILD_NUMBER}
+                   '''
+            }
+        }
 
         stage('Approveal') {
             steps {
