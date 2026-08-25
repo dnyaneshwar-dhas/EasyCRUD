@@ -9,7 +9,6 @@ pipeline {
 
     environment {
         my_aws_cred = credentials('aws-cred')
-
     }
 
     stages {
@@ -42,7 +41,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 dir('backend') {
-                    withSonarQubeENV('sonar') {
+                    withSonarQubeEnv('sonar') {
                         sh 'mvn sonar:sonar'
                     }
                 }
