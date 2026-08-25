@@ -9,7 +9,7 @@ pipeline {
 
     environment {
         my_aws_cred = credentials('aws-cred')
-        
+
     }
 
     stages {
@@ -36,6 +36,16 @@ pipeline {
         stage('Artifact to s3') {
             steps {
                 sh 'aws s3 cp backend/target/*.jar s3://dnyanu.space/Artifact/student.jar'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('backend') {
+                    withSonarQubeENV('sonar') {
+                        sh 'mvn sonar:sonar'
+                    }
+                }
             }
         }
     }
