@@ -3,7 +3,7 @@ pipeline {
         label 'worker'
     }
 
-    tools{
+    tools {
         maven 'maven'
     }
 
@@ -13,13 +13,12 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
             }
         }
-    }
 
-    stage('Build'){
-        steps {
-            dir('backend'){
-                sh 'mvn clean package'
-
+        stage('Build') {
+            steps {
+                dir('backend') {
+                    sh 'mvn clean package'
+                }
             }
         }
     }
