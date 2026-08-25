@@ -3,27 +3,11 @@ pipeline {
         label 'worker'
     }
 
-    tools {
-        maven 'maven'
-    }
-
     stages {
-        stage('checkout') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                dir('backend') {
-                    sh 'mvn clean package'
-                }
-            }
-            post {
-                sucess {
-                    archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
-                }
+                git branch: 'main',
+                    url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
             }
         }
     }
