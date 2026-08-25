@@ -27,5 +27,11 @@ pipeline {
                 }
             }
         }
+
+        stage('Artifact to s3') {
+            steps {
+                sh 'aws s3 cp backend/target/*.jar s3://dnyanu.space/Artifact/student.jar'
+            }
+        }
     }
 }
