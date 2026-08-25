@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent {
         label 'worker'
@@ -90,9 +91,11 @@ pipeline {
 
         stage('Update Manifest') {
             steps {
-                sh '''
-                sed -i "s|image: .*|image: ${ECR_REPO}:${BUILD_NUMBER}|" k8s/backend/backend-deployment.yaml
-                '''
+                dir('backend') {
+                    sh '''
+                    sed -i "s|image: .*|image: ${ECR_REPO}:${BUILD_NUMBER}|" k8s/backend/backend-deployment.yaml
+                    '''
+                }
             }
         }
 
@@ -118,3 +121,4 @@ pipeline {
         }
     }
 }
+
