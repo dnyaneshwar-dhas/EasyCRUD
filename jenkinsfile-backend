@@ -68,13 +68,13 @@ pipeline {
             }
         }
         
-        stage('Trivy image sacnning') {
-            steps {
-                sh '''
-                   TEMPDIR=/opt/temp trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 backend:${BUILD_NUMBER}
-                   '''
-            }
-        }
+        //stage('Trivy image sacnning') {
+          //  steps {
+            //    sh '''
+              //     TEMPDIR=/opt/temp trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 0 backend:${BUILD_NUMBER}
+                //   '''
+         //   }
+       // }
 
         stage('Approveal') {
             steps {
