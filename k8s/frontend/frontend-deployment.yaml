@@ -4,6 +4,8 @@ metadata:
   name: frontend-deployment
   labels:
     app: frontend
+
+
 spec:
   replicas: 2
   strategy:
@@ -19,6 +21,8 @@ spec:
       labels:
         app: frontend
     spec:
+
+    
       containers:
         - name: frontend-container
           image: 872582135546.dkr.ecr.us-east-2.amazonaws.com/frontend:14
