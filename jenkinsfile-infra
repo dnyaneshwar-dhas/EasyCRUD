@@ -3,24 +3,22 @@ pipeline {
         label 'worker'
     }
 
-environmant {
-    MY_AWS_CRED = credential('aws-access')
-
-}
-
-tools {
-    terraform "tf"
-
-}
-
-stages{
-    stage('Checkout') {
-        steps {
-             git branch: 'main', credentialsId: 'github-cred', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
-        }
+    environmant {
+        MY_AWS_CRED = credential('aws-cred')
     }
 
-      stage('TERRAFORM - INIT'){
+    tools {
+        terraform "tf"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'github-cred', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
+            }
+        }
+
+        stage('TERRAFORM - INIT') {
             steps {
                 sh 'terraform init'
             }
