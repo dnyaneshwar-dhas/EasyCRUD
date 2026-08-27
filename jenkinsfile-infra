@@ -1,0 +1,50 @@
+pipline {
+    agent {
+        label 'worker'
+    }
+
+environmant {
+    MY_AWS_CRED = credential('aws-access')
+
+}
+
+tools {
+    terraform "tf"
+
+}
+
+stages{
+    stage('Checkout') {
+        steps {
+             git branch: 'main', credentialsId: 'github-cred', url: 'https://github.com/dnyaneshwar-dhas/EasyCRUD.git'
+        }
+    }
+
+      stage('TERRAFORM - INIT'){
+            steps {
+                sh 'terraform init'
+            }
+        }
+
+        stage('TERRAFORM - FMT - VALIDATE') {
+            steps {
+                sh '''
+                    terraform fmt 
+                    terraform validate
+                '''
+            }
+        }
+
+        stage('TERRAFORM - PLAN ') {
+            steps {
+                sh 'terraform plan'
+            }
+        }
+
+        stage('TERRAFORM - APPLY ') {
+            steps {
+                sh 'terraform apply -auto-approve'
+            }
+        }
+    }
+}
