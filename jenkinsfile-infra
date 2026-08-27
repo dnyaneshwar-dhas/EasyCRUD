@@ -3,7 +3,7 @@ pipeline {
         label 'worker'
     }
 
-    environmant {
+    environment {
         my_aws_cred = credentials('aws-cred')
     }
 
@@ -46,3 +46,5 @@ pipeline {
         }
     }
 }
+ 
+ 
