@@ -4,7 +4,7 @@ pipeline {
     }
 
     environmant {
-        MY_AWS_CRED = credential('aws-cred')
+        my_aws_cred = credentials('aws-cred')
     }
 
     tools {
