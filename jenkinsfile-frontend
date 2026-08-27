@@ -55,6 +55,15 @@ pipeline {
             }
         }
 
+        stage('Trivy Image scanning') {
+            steps {
+                sh '''
+                   trivy image --scanner vuln --severity HIGH,CRITICAL --exit-code 0 frontend:${BUILD_NUMBER}
+                   
+                '''
+            }
+        }
+
         stage('Push image to ECR') {
             steps {
                 sh '''
