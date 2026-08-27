@@ -3,6 +3,12 @@ pipeline {
         label "worker"
 
     }
+
+    environment {
+         my_aws_cred = credentials('aws-cred')
+         ECR_REPO = "872582135546.dkr.ecr.us-east-2.amazonaws.com/frontend"
+
+    }
     
     stages {
         stage('Checkout') {
@@ -41,11 +47,22 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh '''
-                    docker build -t frontend:latest
+                    docker build -t frontend:latest .
                     docker images
                     '''
 
                 }
+            }
+        }
+
+        stage('Push image to ECR') {
+            steps {
+                sh '''
+                aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 872582135546.dkr.ecr.us-east-2.amazonaws.com
+                docker tag frontend:${BUILD_NUMBER} ${ECR_REPO}:${BUILD_NUMBER}
+                docker push ${ECR_REPO}:${BUILD_NUMBER}
+
+                '''
             }
         }
 
