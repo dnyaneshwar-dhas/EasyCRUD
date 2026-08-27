@@ -118,6 +118,7 @@ pipeline {
                 sh '''
                    sudo aws eks update-kubeconfig --name my-eks-cluster --region us-east-2
                    sudo kubectl apply -f argocd/frontend-application.yaml
+                   sudo kubectl apply -f argocd/ingress-application.yaml
                    sudo kubectl get application -n argocd
                    '''
             }
